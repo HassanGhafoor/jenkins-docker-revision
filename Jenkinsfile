@@ -3,6 +3,8 @@ pipeline {
 
   environment {
     DOCKER_IMAGE = 'hassan085/dockerized-node-app'
+    DOCKER_USERNAME = 'hassan085'  // Your Docker Hub username
+    DOCKER_PASSWORD = 'qwerty321'  // Your Docker Hub password (hardcoded for testing)
   }
 
   stages {
@@ -22,15 +24,11 @@ pipeline {
 
     stage('Push Docker Image') {
       steps {
-        script {
-          withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_CREDENTIALS_USR', passwordVariable: 'DOCKER_CREDENTIALS_PSW')]) {
-            // Log in to Docker Hub using the credentials injected from Jenkins
-            bat '''
-              echo %DOCKER_CREDENTIALS_PSW% | docker login -u %DOCKER_CREDENTIALS_USR% --password-stdin
-              docker push %DOCKER_IMAGE%
-            '''
-          }
-        }
+        // Hardcode login credentials and push the image using Windows Batch
+        bat '''
+        echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+        docker push %DOCKER_IMAGE%
+        '''
       }
     }
   }
