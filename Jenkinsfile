@@ -17,14 +17,14 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         // Build the Docker image
-        sh 'docker build -t $DOCKER_IMAGE .'
+        bat 'docker build -t $DOCKER_IMAGE .'
       }
     }
 
     stage('Push Docker Image') {
       steps {
         // Log in to Docker Hub and push the image
-        sh '''
+        bat '''
         echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin
         docker push $DOCKER_IMAGE
         '''
